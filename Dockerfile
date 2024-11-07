@@ -18,6 +18,7 @@ RUN dpkg --add-architecture i386 && \
     bzip2 \
     git \
     cmake make \
+    cppcheck \
     python3 \
     python-is-python3 \
     vim-common astyle \
