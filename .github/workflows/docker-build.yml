@@ -12,15 +12,8 @@ jobs:
       matrix:
         gcc-version:
           - latest
-          - 10.3-2021.10
-          - 10-2020q4
-          - 9-2019q4
-          - 8-2018q4
-          - 7-2017q4
-          - 6-2016q4
         ubuntu-version:
           - latest
-          - focal
       fail-fast: false
     env:
       GCC_VERSION: ${{ matrix.gcc-version }}
