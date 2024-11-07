@@ -73,10 +73,10 @@ jobs:
             FILE=${{ steps.build_args.outputs.FILE }}
             OUTFILE=${{ steps.build_args.outputs.OUTFILE }}
           push: true
-          tags: srzzumix/arm-none-eabi:${{ steps.create_tagname.outputs.tagname }}
+          tags: quintennij/docker-arm-none-eabi:${{ steps.create_tagname.outputs.tagname }}
       - name: Push to version tag
         env:
-          IMAGE_NAME: srzzumix/arm-none-eabi:${{ steps.create_tagname.outputs.tagname }}
-          DOCKER_REPO: srzzumix/arm-none-eabi
+          IMAGE_NAME: quintennij/docker-arm-none-eabi:${{ steps.create_tagname.outputs.tagname }}
+          DOCKER_REPO: quintennij/docker-arm-none-eabi
         run: |
           ./hooks/post_push
