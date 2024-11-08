@@ -20,12 +20,12 @@ RUN dpkg --add-architecture i386 && \
     cmake make \
     cppcheck \
     python3 \
+    python3-pip \
     python-is-python3 \
     vim-common astyle \
     wget \
     && \
-  apt-get install python3-pip -y && \
-  pip install cppcheck-junit && \
+  pip install cppcheck-junit --break-system-packages && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
   mkdir -p /usr/local/ && \
