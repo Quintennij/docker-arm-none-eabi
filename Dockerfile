@@ -24,7 +24,7 @@ RUN dpkg --add-architecture i386 && \
     vim-common astyle \
     wget \
     && \
-  python -m ensurepip --upgrade && \
+  apt-get install python3-pip && \
   pip install cppcheck-junit && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
