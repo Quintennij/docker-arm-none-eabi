@@ -24,6 +24,7 @@ RUN dpkg --add-architecture i386 && \
     vim-common astyle \
     wget \
     && \
+  pip install cppcheck-junit && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
   mkdir -p /usr/local/ && \
