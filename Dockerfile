@@ -2,15 +2,14 @@ ARG UBUNTU_VERSION=latest
 FROM ubuntu:$UBUNTU_VERSION
 ARG UBUNTU_VERSION
 
-ARG DIR=8-2018q4
-ARG FILE=gcc-arm-none-eabi-8-2018-q4-major
-ARG OUTFILE=gcc-arm-none-eabi-8-2018-q4-major
-ARG ARCHI=x86_64-linux
+ARG DIR=10.3-2021.10
+ARG FILE=gcc-arm-none-eabi-10.3-2021.10
+ARG OUTFILE=gcc-arm-none-eabi-10.3-2021.10 ARG ARCHI=x86_64-linux
 
-LABEL maintainer "srz_zumix <https://github.com/srz-zumix>"
+LABEL maintainer="srz_zumix <https://github.com/srz-zumix>"
 
 ENV DEBIAN_FRONTEND=noninteractive
-# https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads
+# Install dependencies and cppcheck
 RUN dpkg --add-architecture i386 && \
   apt-get update && apt-get -y --no-install-recommends install \
     ca-certificates \
@@ -24,16 +23,31 @@ RUN dpkg --add-architecture i386 && \
     python-is-python3 \
     vim-common astyle \
     wget \
+    unzip \
     && \
   pip install cppcheck-junit --break-system-packages && \
   apt-get clean && \
-  rm -rf /var/lib/apt/lists/* && \
-  mkdir -p /usr/local/ && \
+  rm -rf /var/lib/apt/lists/*
+
+# Install arm-none-eabi toolchain
+RUN mkdir -p /usr/local/ && \
+  echo "DIR=$DIR" && \
+  echo "FILE=$FILE" && \
+  echo "ARCHI=$ARCHI" && \
   wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/$DIR/$FILE-$ARCHI.tar.bz2 && \
   tar -xf $FILE-$ARCHI.tar.bz2 -C /usr/local/ && rm *.tar.bz2 && \
   apt-get clean
 
-ENV PATH $PATH:/usr/local/$OUTFILE/bin
+ENV PATH=$PATH:/usr/local/$OUTFILE/bin
+
+# Install ninja build tool
+RUN mkdir /ninja && \
+    cd /ninja && \
+    wget https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-linux.zip && \
+    unzip ninja-linux.zip
+
+ENV PATH=$PATH:/ninja
+
 ENV CC=arm-none-eabi-gcc \
     CXX=arm-none-eabi-g++ \
     CMAKE_C_COMPILER=arm-none-eabi-gcc \
@@ -44,4 +58,8 @@ ENV CC=arm-none-eabi-gcc \
     AR=arm-none-eabi-ar \
     LD=arm-none-eabi-ld \
     FC=arm-none-eabi-gfortran
-ENV LD_LIBRARY_PATH /usr/local/$OUTFILE/lib:$LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH=/usr/local/$OUTFILE/lib
+
+
+RUN mkdir -p /app
+WORKDIR /app
