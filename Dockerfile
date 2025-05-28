@@ -18,6 +18,7 @@ RUN dpkg --add-architecture i386 && \
     bzip2 \
     git \
     cmake make \
+    ninja-build \
     cppcheck \
     python3 \
     python3-pip \
